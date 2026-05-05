@@ -214,6 +214,10 @@ document.getElementById('start-btn').addEventListener('click', () => {
     currentQuestionIndex = 0;
     score = 0;
     usedLifelines = { fiftyFifty: false, phone: false, audience: false };
+    
+    // Prepare and shuffle questions with rules
+    prepareQuestions();
+    
     resetLifelinesUI();
     loadQuestion();
     initMoneyLadder();
@@ -221,16 +225,66 @@ document.getElementById('start-btn').addEventListener('click', () => {
     moneyLadderDiv.classList.add('show');
 });
 
+function prepareQuestions() {
+    // 1. Shuffle all questions first
+    let shuffled = [...defaultQuestions].map(q => {
+        // Shuffle options for EACH question
+        let optionsWithIndex = q.options.map((opt, i) => ({ text: opt, originalIndex: i }));
+        let shuffledOpts = optionsWithIndex.sort(() => Math.random() - 0.5);
+        
+        return {
+            question: q.question,
+            options: shuffledOpts.map(o => o.text),
+            answer: shuffledOpts.findIndex(o => o.originalIndex === q.answer)
+        };
+    }).sort(() => Math.random() - 0.5);
+    
+    // 2. Apply rule: No more than 2 consecutive questions with same answer position
+    let finalQuestions = [];
+    let consecutiveCount = 1;
+    let lastAnswer = -1;
+
+    for (let i = 0; i < shuffled.length; i++) {
+        let currentQ = shuffled[i];
+        
+        if (currentQ.answer === lastAnswer) {
+            consecutiveCount++;
+        } else {
+            consecutiveCount = 1;
+        }
+
+        if (consecutiveCount > 2) {
+            // Find another question further down with a different answer position
+            let swapIndex = shuffled.findIndex((q, idx) => idx > i && q.answer !== lastAnswer);
+            
+            if (swapIndex !== -1) {
+                // Swap questions
+                [shuffled[i], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[i]];
+                currentQ = shuffled[i];
+                consecutiveCount = 1;
+            }
+        }
+        
+        finalQuestions.push(currentQ);
+        lastAnswer = currentQ.answer;
+    }
+    
+    questions = finalQuestions.slice(0, 15); // Take only 15 for a full game
+}
+
 function loadQuestion() {
     const q = questions[currentQuestionIndex];
     questionText.textContent = q.question;
+    
+    // Reset animations and classes for NEW question
     questionText.classList.remove('animate__fadeIn');
     void questionText.offsetWidth; // Trigger reflow
     questionText.classList.add('animate__fadeIn');
 
     options.forEach((btn, index) => {
         btn.querySelector('p').textContent = q.options[index];
-        btn.className = 'option';
+        // CRITICAL: Remove correct/wrong classes and reset visibility
+        btn.classList.remove('correct', 'wrong');
         btn.disabled = false;
         btn.style.visibility = 'visible';
     });
