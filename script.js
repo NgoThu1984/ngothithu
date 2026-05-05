@@ -283,10 +283,14 @@ function loadQuestion() {
 
     options.forEach((btn, index) => {
         btn.querySelector('p').textContent = q.options[index];
-        // CRITICAL: Remove correct/wrong classes and reset visibility
+        // CRITICAL: Remove ALL state classes and forced styles
         btn.classList.remove('correct', 'wrong');
+        btn.removeAttribute('style'); // Clear any visibility: hidden or inline colors
         btn.disabled = false;
         btn.style.visibility = 'visible';
+        
+        // Mobile fix: blur the button to remove sticky :hover/active states
+        btn.blur();
     });
 }
 
@@ -300,8 +304,11 @@ options.forEach(btn => {
 function checkAnswer(selected, btn) {
     const correct = questions[currentQuestionIndex].answer;
     
-    // Disable all options
-    options.forEach(b => b.disabled = true);
+    // Disable all options and remove focus
+    options.forEach(b => {
+        b.disabled = true;
+        b.blur();
+    });
 
     if (selected === correct) {
         btn.classList.add('correct');

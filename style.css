@@ -274,6 +274,8 @@ h1.main-title small {
 
 .option {
     background: var(--glass);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border: 1px solid var(--glass-border);
     padding: 1rem 1.5rem;
     border-radius: 16px;
@@ -286,6 +288,13 @@ h1.main-title small {
     align-items: center;
     gap: 1rem;
     text-align: left;
+    outline: none !important; /* Xóa outline mặc định của trình duyệt */
+    -webkit-tap-highlight-color: transparent; /* Xóa hiệu ứng highlight khi chạm trên Mobile */
+}
+
+.option:focus {
+    outline: none !important;
+    box-shadow: none !important;
 }
 
 .option span {
