@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch sử 9 - Bảo vệ chủ quyền Biển Đông</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+</head>
+<body>
+    <div id="game-container">
+        <button id="theme-toggle" class="theme-btn" title="Chuyển đổi chế độ sáng/tối">🌓</button>
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen">
+            <div class="logo-container animate__animated animate__zoomIn">
+                <div class="logo-circle"></div>
+                <h1 class="main-title">LỊCH SỬ 9<br><small>BẢO VỆ CHỦ QUYỀN, CÁC QUYỀN VÀ LỢI ÍCH HỢP PHÁP CỦA VIỆT NAM Ở BIỂN ĐÔNG</small></h1>
+                <p class="author-tag">Tác giả: Ngô Thị Thư</p>
+            </div>
+            <div class="controls">
+                <button id="start-btn" class="main-btn">Bắt đầu trò chơi</button>
+            </div>
+            <p id="status-msg"></p>
+        </div>
+
+        <!-- Manual Input Modal Removed -->
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen hidden">
+            <div class="game-layout">
+                <div class="main-area">
+                    <div class="top-bar">
+                        <div class="lifelines">
+                            <button id="help-5050" class="help-btn" title="50:50">50:50</button>
+                            <button id="help-phone" class="help-btn" title="Gọi điện cho người thân">📞</button>
+                            <button id="help-audience" class="help-btn" title="Hỏi ý kiến khán giả">👥</button>
+                        </div>
+                        <div id="money-display">0 VNĐ</div>
+                    </div>
+
+                    <div class="question-area">
+                        <div id="question-text" class="animate__animated">Đang tải câu hỏi...</div>
+                        <div class="options-grid">
+                            <button class="option" data-answer="0"><span>A</span> <p></p></button>
+                            <button class="option" data-answer="1"><span>B</span> <p></p></button>
+                            <button class="option" data-answer="2"><span>C</span> <p></p></button>
+                            <button class="option" data-answer="3"><span>D</span> <p></p></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="money-ladder">
+                    <!-- Will be populated by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- End Screen -->
+        <div id="end-screen" class="screen hidden">
+            <h2 id="end-title">Kết thúc!</h2>
+            <p id="final-score"></p>
+            <button id="restart-btn" class="main-btn">Chơi lại</button>
+        </div>
+    </div>
+
+    <!-- Modals for Help -->
+    <div id="modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
